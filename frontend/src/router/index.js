@@ -1,4 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+// 配置 NProgress
+NProgress.configure({ 
+  showSpinner: false,
+  trickleSpeed: 100
+})
 
 // 路由配置
 const routes = [
@@ -6,7 +15,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login.vue')
+    component: () => import('@/views/Login.vue'),
+    meta: { title: '登录' }
   },
   // 学生端布局
   {
@@ -121,6 +131,13 @@ const routes = [
         meta: { title: '个人中心' }
       }
     ]
+  },
+  // 404 页面
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/404.vue'),
+    meta: { title: '页面不存在' }
   }
 ]
 
@@ -131,7 +148,55 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
+  // 开始进度条
+  NProgress.start()
+
+  const userStore = useUserStore()
+  const token = userStore.token
+
+  // 设置页面标题
+  document.title = (to.meta?.title ? to.meta.title + ' - ' : '') + '课堂考勤与请假审批系统'
+
+  // 如果去登录页，直接放行
+  if (to.path === '/login') {
+    next()
+    return
+  }
+
+  // 没有 token，跳登录页
+  if (!token) {
+    next('/login')
+    return
+  }
+
+  // 有 token，检查角色权限
+  const userRole = userStore.userInfo?.role
+  
+  // 学生端路由
+  if (to.path.startsWith('/student') && userRole !== 'student') {
+    next('/login')
+    return
+  }
+  
+  // 教师端路由
+  if (to.path.startsWith('/teacher') && userRole !== 'teacher') {
+    next('/login')
+    return
+  }
+  
+  // 辅导员端路由
+  if (to.path.startsWith('/counselor') && userRole !== 'counselor') {
+    next('/login')
+    return
+  }
+
   next()
+})
+
+// 路由跳转后
+router.afterEach(() => {
+  // 结束进度条
+  NProgress.done()
 })
 
 export default router
