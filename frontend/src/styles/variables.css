@@ -1,0 +1,73 @@
+/* 全局样式变量 */
+:root {
+  /* 主题色 - 蓝紫渐变系 */
+  --primary-color: #667eea;
+  --primary-light: #764ba2;
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+  --info-color: #6366f1;
+
+  /* 文字颜色 */
+  --text-primary: #1f2937;
+  --text-regular: #4b5563;
+  --text-secondary: #9ca3af;
+  --text-placeholder: #d1d5db;
+
+  /* 背景色 */
+  --bg-color: #f3f4f6;
+  --bg-color-white: #ffffff;
+  --bg-color-light: #f9fafb;
+
+  /* 边框色 */
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+
+  /* 圆角 */
+  --border-radius: 12px;
+  --border-radius-small: 8px;
+  --border-radius-large: 16px;
+
+  /* 阴影 */
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --box-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* 过渡动画 */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 全局滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 卡片通用样式 */
+.card-hover {
+  transition: var(--transition);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+/* 渐变文字 */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
